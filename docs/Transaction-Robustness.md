@@ -1,6 +1,8 @@
 Stellar Transaction Robustness
 ==============================
 
+![Flow of transactions in stellar](./images/transaction-lifecycle.png)
+
 - Introduction is still under progress
 - Importance of transaction robustness
 
