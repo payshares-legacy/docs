@@ -1,26 +1,26 @@
-Stellar.txt
+Payshares.txt
 ===========
 ## Introduction
 
-The Stellar.txt file is used to provide the internet information about your domain’s Stellar integration. Any web site can publish Stellar network information. This is useful to announce your validation key, your federation server, peers you are running, other validators in your UNL, if you are a gateway etc.
+The Payshares.txt file is used to provide the internet information about your domain’s Payshares integration. Any web site can publish Payshares network information. This is useful to announce your validation key, your federation server, peers you are running, other validators in your UNL, if you are a gateway etc.
 
-### Publishing stellar.txt
+### Publishing payshares.txt
 
-Given the domain "DOMAIN", the stellar.txt will be searched for in this order:
+Given the domain "DOMAIN", the payshares.txt will be searched for in this order:
 
-- https:/<span></span>/stellar.DOMAIN/stellar.txt
-- https:/<span></span>/DOMAIN/stellar.txt
-- https:/<span></span>/www.DOMAIN/stellar.txt
+- https:/<span></span>/payshares.DOMAIN/payshares.txt
+- https:/<span></span>/DOMAIN/payshares.txt
+- https:/<span></span>/www.DOMAIN/payshares.txt
 
 ### Enabling cross-origin resource sharing (CORS)
-You must enable CORS on the stellar.txt so people can access this file from other sites, the following HTTP header MUST be set for all requests to stellar.txt and its dependent files.
+You must enable CORS on the payshares.txt so people can access this file from other sites, the following HTTP header MUST be set for all requests to payshares.txt and its dependent files.
 
  Access-Control-Allow-Origin: *
 
-**Important:** You should only enable CORS for stellar.txt (or any files it references), so for example in Apache you would set something like:
+**Important:** You should only enable CORS for payshares.txt (or any files it references), so for example in Apache you would set something like:
 
 ```xml
-<Location "/stellar.txt">
+<Location "/payshares.txt">
     Header set Access-Control-Allow-Origin "*"
 </Location>
 ```
@@ -28,7 +28,7 @@ You must enable CORS on the stellar.txt so people can access this file from othe
 Or in nginx:
 
 ```json
-location /stellar.txt {
+location /payshares.txt {
  add_header 'Access-Control-Allow-Origin' '*';
 }
 ```
@@ -37,16 +37,16 @@ For other webservers, see: http://enable-cors.org/server.html
 
 ### Testing CORS
 
-1. Run a curl command in your terminal similar to this (replace stellar.stellar.org with where your stellar.txt file is hosted):
+1. Run a curl command in your terminal similar to this (replace payshares.payshares.co with where your payshares.txt file is hosted):
 
   ```bash
-  curl --head https://stellar.stellar.org/stellar.txt
+  curl --head https://payshares.payshares.co/payshares.txt
   ```
 
 2. Verify the `Access-Control-Allow-Origin` header is present as shown below.
 
   ```bash
-  curl --head https://stellar.stellar.org/stellar.txt
+  curl --head https://payshares.payshares.co/payshares.txt
   HTTP/1.1 200 OK
   Accept-Ranges: bytes
   Access-Control-Allow-Origin: *
@@ -56,10 +56,10 @@ For other webservers, see: http://enable-cors.org/server.html
 
 3. Also run the command on a page that should not have it and verify `Access-Control-Allow-Origin` the header is missing.
 
-## Stellar.txt example
+## Payshares.txt example
 
 ```ini
-Sample stellar.txt
+Sample payshares.txt
 
 This file is UTF-8 with Dos, UNIX, or Mac style end of lines.
 Blank lines and lines beginning with '#' are ignored.
@@ -77,7 +77,7 @@ gBAde4mkDijZatAdNhBzCsuC7GP4MzhA3B
 [validation_public_key]
 n3gVwaSDBtVi4Xd2XBh7rvcwis4uBabu5aNn7WKtEqazJbLHR9n
 
-#   List of ips of known stellards.
+#   List of ips of known paysharesds.
 #   One ipv4 or ipv6 address per line.
 #   A port may optionally be specified after adding a space to the address.
 #   By convention, if known, IPs are listed in from most to least trusted.
@@ -87,19 +87,19 @@ n3gVwaSDBtVi4Xd2XBh7rvcwis4uBabu5aNn7WKtEqazJbLHR9n
 2001:0db8:0100:f101:0210:a4ff:fee3:9566
 
 
-#   List of Stellar validators on this node's UNL.
+#   List of Payshares validators on this node's UNL.
 #
-#   For domains, stellard will probe for https web servers at the specified
-#   domain in the following order: stellar.DOMAIN, www.DOMAIN, DOMAIN
+#   For domains, paysharesd will probe for https web servers at the specified
+#   domain in the following order: payshares.DOMAIN, www.DOMAIN, DOMAIN
 [validators]
 reddit.com
 n3gVwaSDBtVi4Xd2XBh7rvcwis4uBabu5aNn7WKtEqazJbLHR9n
 n3gVwaSDBtVi4Xd2XBh7rvcwis4uBabu5aNn7WKtEqazJbLHR9n John Doe
 
-#   The endpoint which clients should query to resolve stellar addresses
+#   The endpoint which clients should query to resolve payshares addresses
 #   for users on your domain.
 [federation_url]
-https://api.stellar.org/federation
+https://api.payshares.co/federation
 
 #   This section allows a gateway to declare currencies it currently issues.
 #   [currency] [issuing address]

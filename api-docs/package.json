@@ -1,5 +1,5 @@
 {
-    "name": "stellar-docs",
+    "name": "payshares-docs",
     "version": "0.0.1",
     "dependencies": {
         "mustache": "*",

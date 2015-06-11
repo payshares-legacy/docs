@@ -3,7 +3,7 @@
     <command>
         <name>connect</name>
         <admin>true</admin>
-        <desc>Tell stellard to try to connect to some other peer.</desc>
+        <desc>Tell paysharesd to try to connect to some other peer.</desc>
 
         <argument>
             <name>ip</name>
@@ -19,15 +19,15 @@
             <desc>The port to connect to.</desc>
         </argument>
 
-        <cli_example><![CDATA[> stellard connect 53.23.56.110 5000]]></cli_example>
+        <cli_example><![CDATA[> paysharesd connect 53.23.56.110 5000]]></cli_example>
 
     </command>
 
     <command>
         <name>ledger_accept</name>
         <admin>true</admin>
-        <desc>ledger_accept is only used for testing. If stellard is started with -a then the ledger won't close until stellard receives this command.</desc>
-        <cli_example><![CDATA[> stellard ledger_accept]]></cli_example>
+        <desc>ledger_accept is only used for testing. If paysharesd is started with -a then the ledger won't close until paysharesd receives this command.</desc>
+        <cli_example><![CDATA[> paysharesd ledger_accept]]></cli_example>
     </command>
 
 
@@ -37,7 +37,7 @@
         <admin>true</admin>
         <desc>Rotate the log file. This closes and re-opens the file. Typically this is used with a cron job or a manual command line process to first move the existing log file before calling logrotate so that the new log file starts out empty again.</desc>
 
-        <cli_example><![CDATA[> stellard logrotate]]></cli_example>
+        <cli_example><![CDATA[> paysharesd logrotate]]></cli_example>
     </command>
 
     <command>
@@ -53,9 +53,9 @@
             <li>fatal</li>
         </ul>]]></desc>
 
-        <cli_example><![CDATA[> stellard log_level debug
+        <cli_example><![CDATA[> paysharesd log_level debug
 
-Loading: "/root/.config/stellar/stellard.cfg"
+Loading: "/root/.config/payshares/paysharesd.cfg"
 Connecting to: 0.0.0.0:9002
 {
    "result" : {
@@ -71,7 +71,7 @@ Connecting to: 0.0.0.0:9002
         <admin>true</admin>
         <desc>Gets a list of peers this server is connected to.</desc>
 
-        <cli_example><![CDATA[> stellard peers]]></cli_example>
+        <cli_example><![CDATA[> paysharesd peers]]></cli_example>
     </command>
 
     <command>
@@ -79,7 +79,7 @@ Connecting to: 0.0.0.0:9002
         <admin>true</admin>
         <desc>Returns various information about this server.</desc>
 
-        <cli_example><![CDATA[> stellard server_info]]></cli_example>
+        <cli_example><![CDATA[> paysharesd server_info]]></cli_example>
     </command>
 
     <command>
@@ -87,7 +87,7 @@ Connecting to: 0.0.0.0:9002
         <admin>true</admin>
         <desc>Stops the server.</desc>
 
-        <cli_example><![CDATA[> stellard stop]]></cli_example>
+        <cli_example><![CDATA[> paysharesd stop]]></cli_example>
     </command>
 
     <command>
@@ -126,7 +126,7 @@ Connecting to: 0.0.0.0:9002
                 <desc>A comment associated with the publicKey.</desc>
             </result>
 
-        <cli_example><![CDATA[> stellard unl_list]]></cli_example>
+        <cli_example><![CDATA[> paysharesd unl_list]]></cli_example>
 
     </command>
 
@@ -141,17 +141,17 @@ Connecting to: 0.0.0.0:9002
     <command>
         <name>validation_create</name>
         <admin>true</admin>
-        <desc>Generate a random public private key pair to use for a stellard validator.</desc>
+        <desc>Generate a random public private key pair to use for a paysharesd validator.</desc>
             <result>
                 <name>validation_public_key</name>
-                <desc>Validation public key, base58 encoded. Give this to other stellard operators so they can add your server to their UNL.</desc>
+                <desc>Validation public key, base58 encoded. Give this to other paysharesd operators so they can add your server to their UNL.</desc>
             </result>
             <result>
                 <name>validation_seed</name>
-                <desc>Validation secret key, base58 encoded. Put in your stellard.cfg if you want this to be a validating server.</desc>
+                <desc>Validation secret key, base58 encoded. Put in your paysharesd.cfg if you want this to be a validating server.</desc>
             </result>
 
-        <cli_example><![CDATA[>stellard validation_create
+        <cli_example><![CDATA[>paysharesd validation_create
 
 Connecting to: 0.0.0.0:39002
 {

@@ -1,16 +1,16 @@
 
 ### Overview
-When a customer requests a Gateway’s credits in exchange for their corresponding assets, they are “depositing” funds into the Stellar Network. This requires the Gateway to submit a transaction to the stellar network which sends their credits to the user’s stellar address. This section will attempt to describe a methodology for robustly submitting transactions to the Stellar network.
+When a customer requests a Gateway’s credits in exchange for their corresponding assets, they are “depositing” funds into the Payshares Network. This requires the Gateway to submit a transaction to the payshares network which sends their credits to the user’s payshares address. This section will attempt to describe a methodology for robustly submitting transactions to the Payshares network.
 Reference Library
-For a concrete example of deposit processing, consult the reference library found here: https://github.com/stellar/stellar-payments. For Gateways on a nodeJS stack, this library can be used out of the box.
+For a concrete example of deposit processing, consult the reference library found here: https://github.com/payshares/payshares-payments. For Gateways on a nodeJS stack, this library can be used out of the box.
 
 
 ### Robust Transaction Processing
 
-* Robustly submitting a transaction to the Stellar network requires:
+* Robustly submitting a transaction to the Payshares network requires:
 * Signing transactions locally to avoid sending secret keys over the network
 * Keeping track of the sending account’s sequence number locally
-* Handling submission failures to due network problems or stellard downtime
+* Handling submission failures to due network problems or paysharesd downtime
 * Handling submission failures due to transaction errors
 * Persisting unconfirmed transactions meta information
 * Maintaining transaction idempotence by persisting the signed transaction blob
@@ -64,12 +64,12 @@ forEach(transaction in transactions)
   processResult(result);
 ```
 
-Unconfirmed transactions (those in the signed or submitted state), should be repeatedly submitted until they are confirmed or errored. Yes, we could submit a transaction once and then just check it’s hash with the ‘tx’ RPC call. But stellard may have crashed or lost the transaction, in which case we’d have to resubmit anyway. Additionally, resubmitting costs us nothing, because of the property of idempotence mentioned early: a transaction’s signed txblob can be resubmitted without worrying about double paying.
+Unconfirmed transactions (those in the signed or submitted state), should be repeatedly submitted until they are confirmed or errored. Yes, we could submit a transaction once and then just check it’s hash with the ‘tx’ RPC call. But paysharesd may have crashed or lost the transaction, in which case we’d have to resubmit anyway. Additionally, resubmitting costs us nothing, because of the property of idempotence mentioned early: a transaction’s signed txblob can be resubmitted without worrying about double paying.
 
 ### Confirming Transactions and Handling Errors
-The first time a transaction is submitted to the network, stellard will do cursory “pre-validation”, which includes checking to make sure the transaction sequence number is the account’s current sequence number, the account is funded, the destination address exists, among other checks. If any of these checks fail, the transaction should be put into the error state, and any transactions with sequence numbers higher than this one should be resigned.
+The first time a transaction is submitted to the network, paysharesd will do cursory “pre-validation”, which includes checking to make sure the transaction sequence number is the account’s current sequence number, the account is funded, the destination address exists, among other checks. If any of these checks fail, the transaction should be put into the error state, and any transactions with sequence numbers higher than this one should be resigned.
 
-Assuming pre-validation succeeds, the response will return an engine_result of “tesSUCCESS”. This does not mean the transaction has succeeded and been applied to the ledger, but only that it “looks good” from the local stellard’s perspective. The transaction should be repeatedly re-submitted, until you receive a “tefPAST_SEQ” error. That means that this transaction’s sequence number has already been applied to your account. By checking the transaction’s hash in the network, you can see that this transaction was indeed applied (check tx.inLedger property), validated (check validated property), and successful (check meta.TransactionResult.
+Assuming pre-validation succeeds, the response will return an engine_result of “tesSUCCESS”. This does not mean the transaction has succeeded and been applied to the ledger, but only that it “looks good” from the local paysharesd’s perspective. The transaction should be repeatedly re-submitted, until you receive a “tefPAST_SEQ” error. That means that this transaction’s sequence number has already been applied to your account. By checking the transaction’s hash in the network, you can see that this transaction was indeed applied (check tx.inLedger property), validated (check validated property), and successful (check meta.TransactionResult.
 
 Here’s an example fully validated and successful transaction:
 ```
@@ -106,7 +106,7 @@ Here’s a list of error results you’ll encounter when resubmitting transactio
 
 ### Errors
 ##### tesSUCCESS
-The transaction has passed stellard’s pre validation and is well formed, with the correct sequence number. The stellard will attempt to apply this to the current ledger.
+The transaction has passed paysharesd’s pre validation and is well formed, with the correct sequence number. The paysharesd will attempt to apply this to the current ledger.
 
 ##### tefALREADY
 This error means the transaction that you are submitting is in the node’s current ledger transaction set, and is waiting to be applied. This error should be ignored, and transaction submission should continue.
@@ -118,7 +118,7 @@ This signifies that the transaction has been applied to this node’s closed led
 A past sequence error means that a transaction with this sequence number has already been submitted to the network. If you’ve followed the best practices and have only been submitting transactions through one singular point of submission, this is your transaction and it is in a validated, confirmed ledger! To be sure, the reference client double checks that this transaction hash is in a ledger using the ‘tx’ RPC call. If it is, we can then safely mark the transaction as confirmed. If it’s not, we throw a fatal error and stop processing.
 
 ##### terPRE_SEQ
-This means that the transaction your submitting has a sequence number in the future. For instance, if the last sequence number for your account is 10 and you submit a transaction with 15, you’ll get this error. This could happen for a variety of reasons, and usually it will resolve itself. For instance, you submit transaction A with sequence 1 and it returns tesSUCCESS. But then the stellard instance crashes and it drops transaction A. You then submit transaction B with sequence number 2. A terPRE_SEQ error will be returned because the node hasn’t seen sequence number 1 yet. At this point, you need to resubmit transaction A first, and then transaction B will have the correct sequence number and processing will continue.
+This means that the transaction your submitting has a sequence number in the future. For instance, if the last sequence number for your account is 10 and you submit a transaction with 15, you’ll get this error. This could happen for a variety of reasons, and usually it will resolve itself. For instance, you submit transaction A with sequence 1 and it returns tesSUCCESS. But then the paysharesd instance crashes and it drops transaction A. You then submit transaction B with sequence number 2. A terPRE_SEQ error will be returned because the node hasn’t seen sequence number 1 yet. At this point, you need to resubmit transaction A first, and then transaction B will have the correct sequence number and processing will continue.
 
 ##### tecUNFUNDED_PAYMENT
 This error is sent when your account doesn’t have funds to cover this transaction. However, as with all “tec” transactions, this transaction took a sequence number and claimed a fee. This should be a fatal error requiring manual intervention before continuing to process.

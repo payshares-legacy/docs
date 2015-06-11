@@ -4,9 +4,9 @@
 A Gateway’s issuing address secret key is like a printing press for its issued credits (or in the poker chip analogy, the machine that makes a casino’s poker chips). If an attacker compromises the secret key, they can issue unlimited credit at will, making any existing credits worthless because now the Gateway cannot cover withdrawals as it no longer has 1:1 parity between its reserves and its credits on the network. Additionally, the issuing account’s address can no longer be used as it is compromised (in our analogy, the casino would need to mint completely new poker chips to differentiate between the old, compromised chips). This is a worst case scenario for a Gateway and it’s crucial to take steps to ensure this will never happen.
 
 ## Store Issuing Address in Cold Storage
-"Cold storage" is a storage device with no connectivity to the the public internet (preferably through an air gap). A "Cold Wallet" is a Stellar address whose secret key is stored in cold storage.
+"Cold storage" is a storage device with no connectivity to the the public internet (preferably through an air gap). A "Cold Wallet" is a Payshares address whose secret key is stored in cold storage.
 
-It is recommended that a Gateway's issuing secret key be created and stored in cold storage. Any transactions needed to be signed by the issuing address should be signed locally on cold storage, and manually moved to an internet connected machine for propogation to the Stellar network.
+It is recommended that a Gateway's issuing secret key be created and stored in cold storage. Any transactions needed to be signed by the issuing address should be signed locally on cold storage, and manually moved to an internet connected machine for propogation to the Payshares network.
 
 This solution has some problems. Each time you need to pay a user your credits, you will need to manually create a transaction. Additionally, if you require Authorization to hold credits, you'll need to manually create a transaction to authorize each user's account. Obviously, this solution will not scale. What we need is an account that lives on a connected server to automatically create these payment and authorization transactions, while keeping the cold wallet's secret key safely in cold storage.
 
